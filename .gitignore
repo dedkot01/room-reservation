@@ -1,0 +1,7 @@
+.*
+!.env
+!.flake8
+!.gitignore
+
+*.ipynb
+__pycache__
