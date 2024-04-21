@@ -15,7 +15,7 @@ class ReservationUpdate(ReservationBase):
             raise ValueError('Время начала бронирования не может быть меньше текущего времени')
         return value
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def check_from_reserve_before_to_reserve(cls, values):
         if values['from_reserve'] >= values['to_reserve']:
             raise ValueError('Время начала бронирования не может быть больше времени окончания')
