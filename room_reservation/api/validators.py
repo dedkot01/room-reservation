@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from room_reservation.crud.meeting_room import meeting_room_crud
 from room_reservation.crud.reservation import reservation_crud
 from room_reservation.models.meeting_room import MeetingRoom
+from room_reservation.models.reservation import Reservation
 
 
 async def check_name_duplicate(
@@ -41,3 +42,13 @@ async def check_reservation_intersections(**kwargs):
             status_code=422,
             detail=str(reservations),
         )
+
+
+async def check_reservation_before_edit(session: AsyncSession, reservation_id: int) -> Reservation:
+    reservation = await reservation_crud.get(session, reservation_id)
+    if reservation is None:
+        raise HTTPException(
+            status_code=404,
+            detail='Бронь не найдена!',
+        )
+    return reservation
